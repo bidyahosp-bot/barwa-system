@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نظام البروة الرقمي - وزارة الصحة 2026</title>
-    <!-- خط Tajawal الأنيق -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome الأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -19,6 +17,7 @@
             --text-color: #1e293b;
             --text-muted: #64748b;
             --danger-color: #ef4444;
+            --sub-folder-color: #0284c7;
             --border-radius: 12px;
             --shadow: 0 8px 24px rgba(0,0,0,0.06);
         }
@@ -38,7 +37,7 @@
             flex-direction: column;
         }
 
-        /* Trowise & Header */
+        /* Header */
         header {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
@@ -63,14 +62,14 @@
             gap: 20px;
         }
 
-       .logo-img {
-    height: 65px;
-    width: auto;
-    background: white;
-    padding: 6px 12px;
-    border-radius: 8px;
-    object-fit: contain;
-}
+        .logo-img {
+            height: 68px;
+            width: auto;
+            background: white;
+            padding: 6px 12px;
+            border-radius: 10px;
+            object-fit: contain;
+        }
 
         .title-group h1 { font-size: 1.8rem; font-weight: 800; }
         .title-group p { font-size: 0.95rem; color: #e0f2fe; }
@@ -119,11 +118,13 @@
 
         .category-header {
             background: #f8fafc;
-            padding: 18px 25px;
+            padding: 16px 25px;
             border-bottom: 2px solid #edf2f7;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .category-title {
@@ -131,11 +132,35 @@
             display: flex; align-items: center; gap: 10px;
         }
 
-        /* Department Button (Opens Register in New Popup Window) */
-        .dept-card-btn {
-            width: calc(100% - 30px);
+        /* Buttons */
+        .btn {
+            padding: 8px 14px; border-radius: 8px; border: none; font-weight: 700;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 0.88rem;
+            transition: all 0.2s;
+        }
+
+        .btn-add { background: var(--secondary-color); color: white; }
+        .btn-add:hover { background: #146c43; transform: translateY(-1px); }
+        .btn-sub { background: var(--sub-folder-color); color: white; }
+        .btn-sub:hover { background: #0369a1; transform: translateY(-1px); }
+        .btn-edit { background: #3b82f6; color: white; }
+        .btn-delete { background: var(--danger-color); color: white; }
+        .btn-link { background: #8b5cf6; color: white; text-decoration: none; }
+        .btn-print { background: #64748b; color: white; }
+        .btn-back { background: #e2e8f0; color: #1e293b; }
+        .btn-back:hover { background: #cbd5e1; }
+
+        /* Department Card Button */
+        .dept-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             margin: 12px 15px;
-            padding: 16px 20px;
+        }
+
+        .dept-card-btn {
+            flex: 1;
+            padding: 15px 20px;
             background: #ffffff;
             border: 1px solid #cbd5e1;
             border-radius: 10px;
@@ -164,18 +189,29 @@
 
         .dept-card-btn i.fa-folder { color: var(--accent-color); font-size: 1.2rem; }
 
-        .dept-badge {
-            background: #e2e8f0; color: #334155;
-            padding: 4px 12px; border-radius: 20px; font-size: 0.82rem;
+        .badges-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        /* ==================== 1. POPUP REGISTER WINDOW (النافذة الانبثاقية للسجل) ==================== */
+        .dept-badge {
+            background: #e2e8f0; color: #334155;
+            padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;
+        }
+
+        .sub-badge {
+            background: #e0f2fe; color: #0369a1;
+            padding: 4px 10px; border-radius: 20px; font-size: 0.8rem;
+        }
+
+        /* ==================== POPUP REGISTER WINDOW ==================== */
         .register-modal {
             display: none;
             position: fixed;
             top: 0; left: 0;
             width: 100vw; height: 100vh;
-            background: rgba(15, 23, 42, 0.7);
+            background: rgba(15, 23, 42, 0.75);
             backdrop-filter: blur(5px);
             z-index: 2000;
             justify-content: center;
@@ -185,46 +221,37 @@
 
         .register-modal-content {
             background: white;
-            width: 95%;
-            max-width: 1300px;
-            height: 90vh;
+            width: 96%;
+            max-width: 1350px;
+            height: 92vh;
             border-radius: 16px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35);
-            animation: modalFadeIn 0.3s ease-out;
+            animation: modalFadeIn 0.25s ease-out;
         }
 
         @keyframes modalFadeIn {
-            from { opacity: 0; transform: scale(0.95); }
+            from { opacity: 0; transform: scale(0.96); }
             to { opacity: 1; transform: scale(1); }
         }
 
         .register-modal-header {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
-            padding: 20px 30px;
+            padding: 18px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 3px solid var(--accent-color);
         }
 
-        .register-modal-header h2 {
-            font-size: 1.5rem; display: flex; align-items: center; gap: 12px;
-        }
-
         .close-register-btn {
             background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            font-size: 1.2rem;
-            width: 40px; height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: background 0.2s;
+            border: none; color: white; font-size: 1.2rem;
+            width: 40px; height: 40px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
         }
 
         .close-register-btn:hover { background: var(--danger-color); }
@@ -236,34 +263,78 @@
             background: #f8fafc;
         }
 
-        /* Buttons */
-        .btn {
-            padding: 8px 16px; border-radius: 6px; border: none; font-weight: 700;
-            cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 0.88rem;
+        /* Breadcrumb Navigation inside Modal */
+        .breadcrumb-bar {
+            background: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .btn-add { background: var(--secondary-color); color: white; }
-        .btn-add:hover { background: #146c43; }
-        .btn-edit { background: #3b82f6; color: white; }
-        .btn-delete { background: var(--danger-color); color: white; }
-        .btn-link { background: #8b5cf6; color: white; text-decoration: none; }
-        .btn-print { background: #64748b; color: white; }
+        .breadcrumb-path {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 0.95rem;
+        }
 
-        /* Tables inside Popup Register */
+        /* Sub-departments Grid inside Modal */
+        .sub-depts-section {
+            margin-bottom: 25px;
+            background: #f0f9ff;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px dashed #7dd3fc;
+        }
+
+        .sub-depts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .sub-dept-card {
+            background: white;
+            border: 1px solid #bae6fd;
+            padding: 12px 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sub-dept-card:hover {
+            border-color: var(--sub-folder-color);
+            background: #e0f2fe;
+            transform: translateY(-2px);
+        }
+
+        /* Tables */
         .register-table {
             width: 100%; border-collapse: collapse; background: white;
             border-radius: 10px; overflow: hidden; font-size: 0.92rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.03); margin-top: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.03); margin-top: 10px;
         }
 
         .register-table th, .register-table td {
-            padding: 14px 16px; text-align: right; border-bottom: 1px solid #edf2f7;
+            padding: 13px 15px; text-align: right; border-bottom: 1px solid #edf2f7;
         }
 
         .register-table th { background: #0d5c3a; color: white; font-weight: 700; }
         .register-table tr:hover { background: #f1f5f9; }
 
-        /* ==================== 2. POPUP FORM MODAL (إضافة/تعديل سطر) ==================== */
+        /* Form Modals */
         .form-modal {
             display: none;
             position: fixed;
@@ -275,21 +346,21 @@
         }
 
         .form-modal-content {
-            background: white; width: 90%; max-width: 600px;
+            background: white; width: 92%; max-width: 550px;
             border-radius: var(--border-radius); overflow: hidden;
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
         .form-modal-header {
-            background: var(--primary-color); color: white; padding: 16px 20px;
+            background: var(--primary-color); color: white; padding: 15px 20px;
             display: flex; justify-content: space-between; align-items: center;
         }
 
-        .form-modal-body { padding: 20px; }
+        .form-modal-body { padding: 20px; max-height: 75vh; overflow-y: auto; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 0.9rem; }
-        .form-group input, .form-group textarea {
-            width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; outline: none;
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; outline: none; font-size: 0.95rem;
         }
 
         /* Footer */
@@ -316,14 +387,12 @@
     <header>
         <div class="header-container">
             <div class="brand-section">
-    <!-- شعار وزارة الصحة المعتمد -->
-    <img src="logo.png" alt="شعار وزارة الصحة - سلطنة عمان" class="logo-img">
-    
-    <div class="title-group">
-        <h1>وزارة الصحة - نظام البروة الرقمي</h1>
-        <p>منظومة السجلات الإلكترونية الانبثاقية الدائمة (2026م)</p>
-    </div>
-</div>
+                <img src="logo.png" alt="شعار وزارة الصحة - سلطنة عمان" class="logo-img" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Emblem_of_Oman.svg/512px-Emblem_of_Oman.svg.png'">
+                <div class="title-group">
+                    <h1>وزارة الصحة - نظام البروة الرقمي</h1>
+                    <p>منظومة السجلات الإلكترونية الانبثاقية الدائمة (2026م)</p>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -343,7 +412,10 @@
             <div class="category-card">
                 <div class="category-header">
                     <div class="category-title"><i class="fa-solid fa-paper-plane"></i> سجلات الصادر 2026</div>
-                    <span style="font-size:0.85rem; color:var(--text-muted);">اضغط لفتح السجل في نافذة مستقلة</span>
+                    <!-- زر إضافة قسم جديد مكان العبارة السابقة -->
+                    <button class="btn btn-add" onclick="openDeptModal('outgoing', null)">
+                        <i class="fa-solid fa-folder-plus"></i> إضافة قسم/سجل جديد
+                    </button>
                 </div>
                 <div id="outgoingButtons"></div>
             </div>
@@ -352,7 +424,10 @@
             <div class="category-card">
                 <div class="category-header">
                     <div class="category-title"><i class="fa-solid fa-inbox"></i> سجلات الوارد 2026</div>
-                    <span style="font-size:0.85rem; color:var(--text-muted);">اضغط لفتح السجل في نافذة مستقلة</span>
+                    <!-- زر إضافة قسم جديد مكان العبارة السابقة -->
+                    <button class="btn btn-add" onclick="openDeptModal('incoming', null)">
+                        <i class="fa-solid fa-folder-plus"></i> إضافة قسم/سجل جديد
+                    </button>
                 </div>
                 <div id="incomingButtons"></div>
             </div>
@@ -361,23 +436,47 @@
     </div>
 
 
-    <!-- ==================== النافذة الانبثاقية المنفصلة للسجل (REGISTER MODAL) ==================== -->
+    <!-- ==================== النافذة الانبثاقية المنفصلة للسجل ==================== -->
     <div class="register-modal" id="registerModal">
         <div class="register-modal-content">
             <div class="register-modal-header">
                 <h2 id="registerModalTitle"><i class="fa-solid fa-book-bookmark"></i> اسم السجل</h2>
-                <button class="close-register-btn" onclick="closeRegisterModal()"><i class="fa-solid fa-xmark"></i></button>
+                <button class="close-register-btn" onclick="closeRegisterModal()" title="إغلاق والعودة للرئيسية"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
             <div class="register-modal-body">
-                <!-- شريط أدوات السجل -->
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
+                
+                <!-- شريط التنقل بين الأقسام الرئيسية والفرعية -->
+                <div class="breadcrumb-bar">
+                    <div class="breadcrumb-path" id="breadcrumbPath">
+                        <!-- يتحدث تلقائياً -->
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                        <button class="btn btn-back" id="backStepBtn" style="display:none;" onclick="goBackOneLevel()">
+                            <i class="fa-solid fa-arrow-right"></i> رجوع للقسم السابق
+                        </button>
+                        <button class="btn btn-sub" onclick="openDeptModal(null, currentActiveDeptId)">
+                            <i class="fa-solid fa-folder-tree"></i> إضافة قسم فرعي هنا
+                        </button>
+                    </div>
+                </div>
+
+                <!-- عرض الأقسام الفرعية إن وجدت داخل هذا القسم -->
+                <div class="sub-depts-section" id="subDeptsContainer" style="display:none;">
+                    <div style="font-weight:700; color:#0369a1; display:flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-folder-open"></i> الأقسام والسجلات الفرعية التابعة لهذا القسم:
+                    </div>
+                    <div class="sub-depts-grid" id="subDeptsGrid"></div>
+                </div>
+
+                <!-- شريط أدوات قيود السجل الحالي -->
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap:wrap; gap:10px; background:white; padding:15px; border-radius:10px; border:1px solid #e2e8f0;">
                     <div>
-                        <h3 id="registerDeptSubtitle" style="color:var(--primary-color);">تفاصيل السجل الإلكتروني</h3>
-                        <p style="font-size:0.88rem; color:var(--text-muted);">جميع البيانات والقيود محفوظة سحابياً ودائماً في النظام</p>
+                        <h3 id="registerDeptSubtitle" style="color:var(--primary-color);">سجل القيود والمراسلات</h3>
+                        <p style="font-size:0.85rem; color:var(--text-muted);">يمكنك إضافة أسطر جديدة، تعديلها، أو ربطها بملفات Google Drive</p>
                     </div>
                     <div style="display:flex; gap:10px;">
-                        <button class="btn btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> طباعة السجل الحالي</button>
+                        <button class="btn btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> طباعة السجل</button>
                         <button class="btn btn-add" onclick="openFormModal()"><i class="fa-solid fa-plus"></i> إضافة قيد/سطر جديد</button>
                     </div>
                 </div>
@@ -387,18 +486,16 @@
                     <table class="register-table">
                         <thead>
                             <tr>
-                                <th>رقم القيد / الرقم الوظيفي</th>
+                                <th>رقم القيد / الوظيفي</th>
                                 <th>التاريخ / الفترة</th>
                                 <th>الموضوع / التفاصيل</th>
                                 <th>الجهة / الفرع</th>
                                 <th>ملاحظات ومرفقات</th>
                                 <th>الرابط السحابي (Google Drive)</th>
-                                <th>إجراءات التحكم</th>
+                                <th>إجراءات</th>
                             </tr>
                         </thead>
-                        <tbody id="registerTableBody">
-                            <!-- الأسطر تدرج بالـ JavaScript -->
-                        </tbody>
+                        <tbody id="registerTableBody"></tbody>
                     </table>
                 </div>
             </div>
@@ -406,7 +503,43 @@
     </div>
 
 
-    <!-- ==================== نافذة إضافة/تعديل سطر (FORM MODAL) ==================== -->
+    <!-- ==================== نافذة إضافة قسم (رئيسي أو فرعي) ==================== -->
+    <div class="form-modal" id="deptModal">
+        <div class="form-modal-content">
+            <div class="form-modal-header">
+                <h3 id="deptModalTitle"><i class="fa-solid fa-folder-plus"></i> إضافة قسم / سجل جديد</h3>
+                <i class="fa-solid fa-xmark" style="cursor:pointer; font-size:1.3rem;" onclick="closeDeptModal()"></i>
+            </div>
+            <div class="form-modal-body">
+                <input type="hidden" id="newDeptCategory">
+                <input type="hidden" id="newDeptParentId">
+                
+                <div class="form-group">
+                    <label>اسم القسم أو السجل الجديد:</label>
+                    <input type="text" id="newDeptName" placeholder="مثال: قسم العقود، أو سجل المتابعة اليومية..." required>
+                </div>
+                <div class="form-group">
+                    <label>اختر أيقونة القسم:</label>
+                    <select id="newDeptIcon">
+                        <option value="fa-folder">مجلد قياسي (Folder)</option>
+                        <option value="fa-file-contract">عقود وقرارات</option>
+                        <option value="fa-file-invoice-dollar">شؤون مالية وفواتير</option>
+                        <option value="fa-wrench">صيانة وهندسة</option>
+                        <option value="fa-users">موارد بشرية وموظفين</option>
+                        <option value="fa-boxes-packing">مخازن وعهدة</option>
+                        <option value="fa-hospital">خدمات طبية وصحية</option>
+                    </select>
+                </div>
+            </div>
+            <div style="padding:15px 20px; background:#f1f5f9; display:flex; justify-content:flex-end; gap:10px;">
+                <button class="btn btn-print" onclick="closeDeptModal()">إلغاء</button>
+                <button class="btn btn-add" onclick="saveNewDept()"><i class="fa-solid fa-check"></i> إنشاء وحفظ القسم</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==================== نافذة إضافة/تعديل سطر قيد ==================== -->
     <div class="form-modal" id="formModal">
         <div class="form-modal-content">
             <div class="form-modal-header">
@@ -438,7 +571,7 @@
                         <input type="url" id="fieldDriveUrl" placeholder="https://drive.google.com/file/d/...">
                     </div>
                     <div class="form-group">
-                        <label>الملاحظات والمرفقات إضافية:</label>
+                        <label>الملاحظات والمرفقات الإضافية:</label>
                         <input type="text" id="fieldNotes" placeholder="ملاحظات أو اسم المرفق">
                     </div>
                 </form>
@@ -462,10 +595,31 @@
         </div>
     </footer>
 
-    <!-- السكربت والتحكم بالبيانات -->
+    <!-- السكربت المتطور لدعم الأقسام المتداخلة والتخزين الدائم -->
     <script>
-        // البيانات الأولية لجميع الأقسام والسجلات
-        const defaultData = {
+        // هيكل الأقسام الافتراضي (يدعم parentId لإنشاء قسم داخل قسم)
+        const defaultDepts = [
+            // صادر 2026
+            { id: "out_hr", category: "outgoing", parentId: null, name: "التخطيط والموارد البشرية", icon: "fa-users" },
+            { id: "out_quality", category: "outgoing", parentId: null, name: "الجودة", icon: "fa-award" },
+            { id: "out_health", category: "outgoing", parentId: null, name: "الخدمات الصحية والبرامج", icon: "fa-user-nurse" },
+            { id: "out_maintenance", category: "outgoing", parentId: null, name: "الصيانة - طلبات مستشفى بدية", icon: "fa-wrench" },
+            // قسم فرعي مدمج كمثال داخل الصيانة
+            { id: "out_admin", category: "outgoing", parentId: "out_maintenance", name: "الشؤون الإدارية (فرعي)", icon: "fa-building" },
+            { id: "out_stores", category: "outgoing", parentId: null, name: "المخازن والأثاث", icon: "fa-boxes-packing" },
+
+            // وارد 2026
+            { id: "in_direct", category: "incoming", parentId: null, name: "الملفات الواردة المباشرة (الجذور)", icon: "fa-file-lines" },
+            { id: "in_hr", category: "incoming", parentId: null, name: "التخطيط والموارد البشرية", icon: "fa-users" },
+            { id: "in_quality", category: "incoming", parentId: null, name: "الجودة", icon: "fa-award" },
+            { id: "in_health", category: "incoming", parentId: null, name: "الخدمات الصحية والبرامج", icon: "fa-user-nurse" },
+            { id: "in_maintenance", category: "incoming", parentId: null, name: "الصيانة والشئون المالية والأمراض المعدية", icon: "fa-file-invoice-dollar" },
+            { id: "in_decisions", category: "incoming", parentId: null, name: "القرارات وتجديد العقود", icon: "fa-file-contract" },
+            { id: "in_stores", category: "incoming", parentId: null, name: "المخازن والخدمات المساندة", icon: "fa-boxes-packing" }
+        ];
+
+        // البيانات الافتراضية للقيود
+        const defaultRecords = {
             "out_hr": [{ id: "262300101", date: "2026-01-10", subject: "بيانات موظفي قسم التخطيط والموارد البشرية", target: "المديرية العامة للخدمات الصحية", driveUrl: "https://drive.google.com", notes: "2026.xlsx" }],
             "out_quality": [{ id: "262300205", date: "2026-02-15", subject: "مؤشرات وتقارير الجودة لمستشفى بدية 2026", target: "دائرة الجودة والاعتماد", driveUrl: "https://drive.google.com", notes: "الجودة.xlsx" }],
             "out_health": [{ id: "262300309", date: "2026-03-01", subject: "خطة البرامج الصحية والخدمات المساندة", target: "الخدمات الصحية والبرامج", driveUrl: "https://drive.google.com", notes: "2026.xlsx" }],
@@ -493,92 +647,168 @@
             "in_stores": [{ id: "2623148151", date: "18/5/2026", subject: "مستندات كشوفات واستلام الأثاث المكتبي والنظافة", target: "المخازن والخدمات العامة", driveUrl: "https://drive.google.com", notes: "الاثاث.xlsx" }]
         };
 
-        const deptStructure = {
-            outgoing: [
-                { id: "out_hr", name: "التخطيط والموارد البشرية", icon: "fa-users" },
-                { id: "out_quality", name: "الجودة", icon: "fa-award" },
-                { id: "out_health", name: "الخدمات الصحية والبرامج", icon: "fa-user-nurse" },
-                { id: "out_maintenance", name: "الصيانة - طلبات مستشفى بدية", icon: "fa-wrench" },
-                { id: "out_admin", name: "الصيانة - الشؤون الإدارية", icon: "fa-building" },
-                { id: "out_stores", name: "المخازن والأثاث", icon: "fa-boxes-packing" }
-            ],
-            incoming: [
-                { id: "in_direct", name: "الملفات الواردة المباشرة (الجذور)", icon: "fa-file-lines" },
-                { id: "in_hr", name: "التخطيط والموارد البشرية", icon: "fa-users" },
-                { id: "in_quality", name: "الجودة", icon: "fa-award" },
-                { id: "in_health", name: "الخدمات الصحية والبرامج", icon: "fa-user-nurse" },
-                { id: "in_maintenance", name: "الصيانة والشئون المالية والأمراض المعدية", icon: "fa-file-invoice-dollar" },
-                { id: "in_decisions", name: "القرارات وتجديد العقود", icon: "fa-file-contract" },
-                { id: "in_stores", name: "المخازن والخدمات المساندة", icon: "fa-boxes-packing" }
-            ]
-        };
-
-        let appData = {};
+        let allDepts = [];
+        let allRecords = {};
         let currentActiveDeptId = null;
 
+        // تحميل البيانات
         function loadData() {
-            const saved = localStorage.getItem('barwa_system_popup_2026');
-            if (saved) {
-                appData = JSON.parse(saved);
+            const savedDepts = localStorage.getItem('barwa_depts_v3');
+            const savedRecords = localStorage.getItem('barwa_records_v3');
+
+            if (savedDepts && savedRecords) {
+                allDepts = JSON.parse(savedDepts);
+                allRecords = JSON.parse(savedRecords);
             } else {
-                appData = JSON.parse(JSON.stringify(defaultData));
-                saveData();
+                allDepts = JSON.parse(JSON.stringify(defaultDepts));
+                allRecords = JSON.parse(JSON.stringify(defaultRecords));
+                saveAllData();
             }
             renderHomeButtons();
         }
 
-        function saveData() {
-            localStorage.setItem('barwa_system_popup_2026', JSON.stringify(appData));
+        function saveAllData() {
+            localStorage.setItem('barwa_depts_v3', JSON.stringify(allDepts));
+            localStorage.setItem('barwa_records_v3', JSON.stringify(allRecords));
         }
 
+        // رسم أزرار الأقسام الرئيسية في الواجهة
         function renderHomeButtons() {
-            renderButtons('outgoingButtons', deptStructure.outgoing);
-            renderButtons('incomingButtons', deptStructure.incoming);
+            renderCategoryList('outgoingButtons', 'outgoing');
+            renderCategoryList('incomingButtons', 'incoming');
         }
 
-        function renderButtons(containerId, depts) {
+        function renderCategoryList(containerId, categoryName) {
             const container = document.getElementById(containerId);
             container.innerHTML = "";
 
-            depts.forEach(dept => {
-                const count = (appData[dept.id] || []).length;
+            // جلب الأقسام الرئيسية فقط (التي ليس لها parentId)
+            const rootDepts = allDepts.filter(d => d.category === categoryName && d.parentId === null);
+
+            rootDepts.forEach(dept => {
+                const recordsCount = (allRecords[dept.id] || []).length;
+                const subDeptsCount = allDepts.filter(d => d.parentId === dept.id).length;
+
                 container.innerHTML += `
-                    <button class="dept-card-btn" onclick="openRegisterModal('${dept.id}', '${dept.name}')">
-                        <div class="title-wrapper">
-                            <i class="fa-solid ${dept.icon}"></i>
-                            <span>${dept.name}</span>
-                        </div>
-                        <div>
-                            <span class="dept-badge">${count} قيود مسجلة</span>
-                            <i class="fa-solid fa-arrow-left" style="margin-right:10px; color:var(--primary-color);"></i>
-                        </div>
-                    </button>
+                    <div class="dept-row">
+                        <button class="dept-card-btn" onclick="openRegisterModal('${dept.id}')">
+                            <div class="title-wrapper">
+                                <i class="fa-solid ${dept.icon}"></i>
+                                <span>${dept.name}</span>
+                            </div>
+                            <div class="badges-group">
+                                ${subDeptsCount > 0 ? `<span class="sub-badge"><i class="fa-solid fa-folder-tree"></i> ${subDeptsCount} أقسام فرعية</span>` : ''}
+                                <span class="dept-badge">${recordsCount} قيود مسجلة</span>
+                                <i class="fa-solid fa-arrow-left" style="color:var(--primary-color);"></i>
+                            </div>
+                        </button>
+                    </div>
                 `;
             });
         }
 
-        // ================= فتح السجل في النافذة الانبثاقية =================
-        function openRegisterModal(deptId, deptName) {
+        // ================= فتح السجل في النافذة المنفصلة =================
+        function openRegisterModal(deptId) {
             currentActiveDeptId = deptId;
-            document.getElementById('registerModalTitle').innerHTML = `<i class="fa-solid fa-book-bookmark"></i> السجل الإلكتروني: ${deptName}`;
-            document.getElementById('registerDeptSubtitle').innerText = `تفاصيل جميع القيود والروابط المرفقة لـ (${deptName})`;
-            
+            const dept = allDepts.find(d => d.id === deptId);
+            if (!dept) return;
+
+            document.getElementById('registerModalTitle').innerHTML = `<i class="fa-solid ${dept.icon}"></i> السجل الإلكتروني: ${dept.name}`;
+            document.getElementById('registerDeptSubtitle').innerText = `قيود ومراسلات قسم: ${dept.name}`;
+
+            // بناء مسار التنقل (Breadcrumb)
+            buildBreadcrumb(dept);
+
+            // عرض زر الرجوع للقسم الأب إذا كان هذا قسماً فرعياً
+            const backBtn = document.getElementById('backStepBtn');
+            if (dept.parentId) {
+                backBtn.style.display = 'inline-flex';
+            } else {
+                backBtn.style.display = 'none';
+            }
+
+            // عرض الأقسام الفرعية الموجودة داخل هذا القسم
+            renderSubDepartments(deptId);
+
+            // عرض جدول القيود الخاص بهذا القسم
             renderRegisterTable();
+
             document.getElementById('registerModal').style.display = 'flex';
+        }
+
+        function buildBreadcrumb(dept) {
+            let pathChain = [];
+            let curr = dept;
+            while (curr) {
+                pathChain.unshift(curr);
+                curr = allDepts.find(d => d.id === curr.parentId);
+            }
+
+            const catTitle = dept.category === 'outgoing' ? 'سجلات الصادر 2026' : 'سجلات الوارد 2026';
+            let html = `<span style="color:#64748b;"><i class="fa-solid fa-house"></i> ${catTitle}</span>`;
+            
+            pathChain.forEach((item, idx) => {
+                html += ` <i class="fa-solid fa-chevron-left" style="font-size:0.75rem; color:#94a3b8;"></i> `;
+                if (idx === pathChain.length - 1) {
+                    html += `<span style="color:var(--primary-color); text-decoration:underline;">${item.name}</span>`;
+                } else {
+                    html += `<a href="#" onclick="openRegisterModal('${item.id}'); return false;" style="color:#0284c7; text-decoration:none;">${item.name}</a>`;
+                }
+            });
+
+            document.getElementById('breadcrumbPath').innerHTML = html;
+        }
+
+        function goBackOneLevel() {
+            const dept = allDepts.find(d => d.id === currentActiveDeptId);
+            if (dept && dept.parentId) {
+                openRegisterModal(dept.parentId);
+            }
+        }
+
+        function renderSubDepartments(parentId) {
+            const subs = allDepts.filter(d => d.parentId === parentId);
+            const container = document.getElementById('subDeptsContainer');
+            const grid = document.getElementById('subDeptsGrid');
+
+            if (subs.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+
+            container.style.display = 'block';
+            grid.innerHTML = subs.map(sub => {
+                const count = (allRecords[sub.id] || []).length;
+                const childSubs = allDepts.filter(d => d.parentId === sub.id).length;
+                return `
+                    <div class="sub-dept-card" onclick="openRegisterModal('${sub.id}')">
+                        <div style="display:flex; align-items:center; gap:10px; font-weight:700; color:#0f172a;">
+                            <i class="fa-solid ${sub.icon}" style="color:var(--sub-folder-color); font-size:1.2rem;"></i>
+                            <div>
+                                <div>${sub.name}</div>
+                                <div style="font-size:0.78rem; color:#64748b; font-weight:normal;">
+                                    ${count} قيود ${childSubs > 0 ? `• ${childSubs} أقسام فرعية` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-arrow-left" style="color:var(--sub-folder-color);"></i>
+                    </div>
+                `;
+            }).join('');
         }
 
         function closeRegisterModal() {
             document.getElementById('registerModal').style.display = 'none';
             currentActiveDeptId = null;
-            renderHomeButtons(); // تحديث أعداد القيود في الرئيسية
+            renderHomeButtons();
         }
 
         function renderRegisterTable() {
-            const rows = appData[currentActiveDeptId] || [];
+            const rows = allRecords[currentActiveDeptId] || [];
             const tbody = document.getElementById('registerTableBody');
 
             if (rows.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#888; padding:30px;">لا توجد قيود مسجلة في هذا السجل حالياً. يمكنك إضافة قيد جديد بالضغط على زر (إضافة قيد/سطر جديد).</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#888; padding:25px;">لا توجد قيود مسجلة في هذا السجل حالياً. اضغط على (إضافة قيد/سطر جديد) للبدء بالتسجيل.</td></tr>`;
                 return;
             }
 
@@ -590,24 +820,78 @@
                     <td>${r.target || '-'}</td>
                     <td>${r.notes || '-'}</td>
                     <td>
-                        ${r.driveUrl ? `<a href="${r.driveUrl}" target="_blank" class="btn btn-link"><i class="fa-brands fa-google-drive"></i> فتح الملف في Drive</a>` : '<span style="color:#94a3b8; font-size:0.8rem;">لا يوجد رابط</span>'}
+                        ${r.driveUrl ? `<a href="${r.driveUrl}" target="_blank" class="btn btn-link"><i class="fa-brands fa-google-drive"></i> فتح الملف</a>` : '<span style="color:#94a3b8; font-size:0.8rem;">لا يوجد رابط</span>'}
                     </td>
                     <td>
                         <div style="display:flex; gap:6px;">
-                            <button class="btn btn-edit" onclick="openFormModal(${index})"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn btn-delete" onclick="deleteEntry(${index})"><i class="fa-solid fa-trash"></i></button>
+                            <button class="btn btn-edit" onclick="openFormModal(${index})" title="تعديل"><i class="fa-solid fa-pen"></i></button>
+                            <button class="btn btn-delete" onclick="deleteEntry(${index})" title="حذف"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </td>
                 </tr>
             `).join('');
         }
 
-        // ================= نافذة إضافة/تعديل سطر داخل النافذة المنفصلة =================
+        // ================= إضافة قسم رئيسي أو فرعي جديد =================
+        function openDeptModal(category, parentId) {
+            document.getElementById('newDeptName').value = '';
+            document.getElementById('newDeptParentId').value = parentId || '';
+            
+            if (parentId) {
+                const parentDept = allDepts.find(d => d.id === parentId);
+                document.getElementById('newDeptCategory').value = parentDept.category;
+                document.getElementById('deptModalTitle').innerHTML = `<i class="fa-solid fa-folder-tree"></i> إضافة قسم فرعي داخل (${parentDept.name})`;
+            } else {
+                document.getElementById('newDeptCategory').value = category;
+                const catName = category === 'outgoing' ? 'سجلات الصادر 2026' : 'سجلات الوارد 2026';
+                document.getElementById('deptModalTitle').innerHTML = `<i class="fa-solid fa-folder-plus"></i> إضافة قسم رئيسي في (${catName})`;
+            }
+
+            document.getElementById('deptModal').style.display = 'flex';
+        }
+
+        function closeDeptModal() {
+            document.getElementById('deptModal').style.display = 'none';
+        }
+
+        function saveNewDept() {
+            const nameVal = document.getElementById('newDeptName').value.trim();
+            const categoryVal = document.getElementById('newDeptCategory').value;
+            const parentIdVal = document.getElementById('newDeptParentId').value || null;
+            const iconVal = document.getElementById('newDeptIcon').value;
+
+            if (!nameVal) {
+                alert('يرجى كتابة اسم القسم الجديد');
+                return;
+            }
+
+            const newId = 'dept_' + Date.now();
+            allDepts.push({
+                id: newId,
+                category: categoryVal,
+                parentId: parentIdVal,
+                name: nameVal,
+                icon: iconVal
+            });
+            allRecords[newId] = [];
+
+            saveAllData();
+            closeDeptModal();
+
+            if (parentIdVal) {
+                // تحديث النافذة الحالية لعرض القسم الفرعي فوراً
+                openRegisterModal(parentIdVal);
+            } else {
+                renderHomeButtons();
+            }
+        }
+
+        // ================= نافذة إضافة/تعديل سطر قيد =================
         function openFormModal(editIndex = null) {
             document.getElementById('editRowIndex').value = editIndex !== null ? editIndex : '';
             
             if (editIndex !== null) {
-                const item = appData[currentActiveDeptId][editIndex];
+                const item = allRecords[currentActiveDeptId][editIndex];
                 document.getElementById('formModalTitle').innerText = 'تعديل السجل الحالي';
                 document.getElementById('fieldId').value = item.id;
                 document.getElementById('fieldDate').value = item.date;
@@ -616,7 +900,7 @@
                 document.getElementById('fieldDriveUrl').value = item.driveUrl || '';
                 document.getElementById('fieldNotes').value = item.notes || '';
             } else {
-                document.getElementById('formModalTitle').innerText = 'إضافة سطر/قيد جديد لسجل القسم';
+                document.getElementById('formModalTitle').innerText = 'إضافة سطر/قيد جديد للسجل';
                 document.getElementById('entryForm').reset();
             }
             
@@ -647,41 +931,45 @@
                 notes: document.getElementById('fieldNotes').value
             };
 
-            if (!appData[currentActiveDeptId]) appData[currentActiveDeptId] = [];
+            if (!allRecords[currentActiveDeptId]) allRecords[currentActiveDeptId] = [];
 
             if (editIndex !== '') {
-                appData[currentActiveDeptId][editIndex] = newObj;
+                allRecords[currentActiveDeptId][editIndex] = newObj;
             } else {
-                appData[currentActiveDeptId].unshift(newObj);
+                allRecords[currentActiveDeptId].unshift(newObj);
             }
 
-            saveData();
+            saveAllData();
             renderRegisterTable();
             closeFormModal();
         }
 
         function deleteEntry(index) {
-            if (confirm('هل أنت تأكد من حذف هذا القيد نهائياً من السجل؟')) {
-                appData[currentActiveDeptId].splice(index, 1);
-                saveData();
+            if (confirm('هل أنت متأكد من حذف هذا القيد نهائياً من السجل؟')) {
+                allRecords[currentActiveDeptId].splice(index, 1);
+                saveAllData();
                 renderRegisterTable();
             }
         }
 
-        // البحث السريع
+        // البحث الشامل
         function globalSearch() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
             if(!query) return;
 
-            for (let deptId in appData) {
-                const match = appData[deptId].find(r => 
+            for (let dept of allDepts) {
+                if (dept.name.toLowerCase().includes(query)) {
+                    openRegisterModal(dept.id);
+                    return;
+                }
+                const records = allRecords[dept.id] || [];
+                const match = records.find(r => 
                     r.id.toLowerCase().includes(query) || 
                     r.subject.toLowerCase().includes(query)
                 );
                 if (match) {
-                    let name = deptId;
-                    openRegisterModal(deptId, "نتائج البحث: " + deptId);
-                    break;
+                    openRegisterModal(dept.id);
+                    return;
                 }
             }
         }
