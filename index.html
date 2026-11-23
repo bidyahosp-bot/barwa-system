@@ -37,7 +37,6 @@
             flex-direction: column;
         }
 
-        /* Header */
         header {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
@@ -74,6 +73,26 @@
         .title-group h1 { font-size: 1.8rem; font-weight: 800; }
         .title-group p { font-size: 0.95rem; color: #e0f2fe; }
 
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .sync-status {
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #f8fafc;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
         .backup-actions {
             display: flex;
             gap: 10px;
@@ -88,7 +107,6 @@
             width: 100%;
         }
 
-        /* Search Box */
         .search-box {
             background: var(--card-bg);
             padding: 15px 25px;
@@ -105,7 +123,6 @@
             width: 100%; border: none; outline: none; font-size: 1rem;
         }
 
-        /* Grid */
         .sections-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
@@ -138,7 +155,6 @@
             display: flex; align-items: center; gap: 10px;
         }
 
-        /* Buttons */
         .btn {
             padding: 8px 14px; border-radius: 8px; border: none; font-weight: 700;
             cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 0.88rem;
@@ -158,7 +174,6 @@
         .btn-gold { background: var(--accent-color); color: #111; }
         .btn-gold:hover { background: #b89628; color: white; }
 
-        /* Department Card Button */
         .dept-row {
             display: flex;
             align-items: center;
@@ -213,7 +228,6 @@
             padding: 4px 10px; border-radius: 20px; font-size: 0.8rem;
         }
 
-        /* ==================== POPUP REGISTER WINDOW ==================== */
         .register-modal {
             display: none;
             position: fixed;
@@ -386,7 +400,6 @@
 </head>
 <body>
 
-    <!-- الترويسة الرئيسية -->
     <header>
         <div class="header-container">
             <div class="brand-section">
@@ -396,32 +409,30 @@
                     <p>منظومة السجلات الإلكترونية الانبثاقية الدائمة (2026م)</p>
                 </div>
             </div>
-            <!-- أزرار النسخ الاحتياطي لحماية البيانات -->
-            <div class="backup-actions">
-                <button class="btn btn-gold" onclick="exportBackup()" title="حفظ نسخة احتياطية على الجهاز">
-                    <i class="fa-solid fa-download"></i> تصدير نسخة احتياطية
-                </button>
-                <button class="btn btn-back" onclick="document.getElementById('importFile').click()" title="استرجاع بيانات من ملف محفوظ">
-                    <i class="fa-solid fa-upload"></i> استيراد نسخة
-                </button>
-                <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importBackup(event)">
+            <div class="header-right">
+                <span class="sync-status" id="syncStatus">
+                    <i class="fa-solid fa-cloud"></i> التخزين السحابي متصل
+                </span>
+                <div class="backup-actions">
+                    <button class="btn btn-gold" onclick="exportBackup()" title="حفظ نسخة احتياطية على الجهاز">
+                        <i class="fa-solid fa-download"></i> تصدير نسخة احتياطية
+                    </button>
+                    <button class="btn btn-back" onclick="document.getElementById('importFile').click()" title="استرجاع بيانات من ملف محفوظ">
+                        <i class="fa-solid fa-upload"></i> استيراد نسخة
+                    </button>
+                    <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importBackup(event)">
+                </div>
             </div>
         </div>
     </header>
 
-    <!-- الواجهة الرئيسية -->
     <div class="main-container">
-
-        <!-- شريط البحث -->
         <div class="search-box">
             <i class="fa-solid fa-magnifying-glass" style="color:var(--primary-color); font-size:1.2rem;"></i>
             <input type="text" id="searchInput" onkeyup="globalSearch()" placeholder="ابحث عن أي سجل، رقم قيد، موضوع، أو قسم لفتحه فوراً...">
         </div>
 
-        <!-- الأقسام الرئيسية -->
         <div class="sections-grid">
-
-            <!-- سجل الصادر -->
             <div class="category-card">
                 <div class="category-header">
                     <div class="category-title"><i class="fa-solid fa-paper-plane"></i> سجلات الصادر 2026</div>
@@ -432,7 +443,6 @@
                 <div id="outgoingButtons"></div>
             </div>
 
-            <!-- سجل الوارد -->
             <div class="category-card">
                 <div class="category-header">
                     <div class="category-title"><i class="fa-solid fa-inbox"></i> سجلات الوارد 2026</div>
@@ -442,12 +452,9 @@
                 </div>
                 <div id="incomingButtons"></div>
             </div>
-
         </div>
     </div>
 
-
-    <!-- ==================== النافذة الانبثاقية المنفصلة للسجل ==================== -->
     <div class="register-modal" id="registerModal">
         <div class="register-modal-content">
             <div class="register-modal-header">
@@ -456,8 +463,6 @@
             </div>
             
             <div class="register-modal-body">
-                
-                <!-- شريط التنقل بين الأقسام الرئيسية والفرعية -->
                 <div class="breadcrumb-bar">
                     <div class="breadcrumb-path" id="breadcrumbPath"></div>
                     <div style="display:flex; gap:8px;">
@@ -470,7 +475,6 @@
                     </div>
                 </div>
 
-                <!-- عرض الأقسام الفرعية إن وجدت داخل هذا القسم -->
                 <div class="sub-depts-section" id="subDeptsContainer" style="display:none;">
                     <div style="font-weight:700; color:#0369a1; display:flex; align-items:center; gap:8px;">
                         <i class="fa-solid fa-folder-open"></i> الأقسام والسجلات الفرعية التابعة لهذا القسم:
@@ -478,7 +482,6 @@
                     <div class="sub-depts-grid" id="subDeptsGrid"></div>
                 </div>
 
-                <!-- شريط أدوات قيود السجل الحالي -->
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap:wrap; gap:10px; background:white; padding:15px; border-radius:10px; border:1px solid #e2e8f0;">
                     <div>
                         <h3 id="registerDeptSubtitle" style="color:var(--primary-color);">سجل القيود والمراسلات</h3>
@@ -490,7 +493,6 @@
                     </div>
                 </div>
 
-                <!-- جدول بيانات السجل -->
                 <div style="overflow-x:auto;">
                     <table class="register-table">
                         <thead>
@@ -511,8 +513,6 @@
         </div>
     </div>
 
-
-    <!-- ==================== نافذة إضافة قسم (رئيسي أو فرعي) ==================== -->
     <div class="form-modal" id="deptModal">
         <div class="form-modal-content">
             <div class="form-modal-header">
@@ -547,8 +547,6 @@
         </div>
     </div>
 
-
-    <!-- ==================== نافذة إضافة/تعديل سطر قيد ==================== -->
     <div class="form-modal" id="formModal">
         <div class="form-modal-content">
             <div class="form-modal-header">
@@ -592,7 +590,6 @@
         </div>
     </div>
 
-    <!-- التذييل الرسمي -->
     <footer>
         <div class="footer-content">
             <div>
@@ -605,6 +602,8 @@
     </footer>
 
     <script>
+        const CLOUD_API_URL = "https://script.google.com/macros/s/AKfycbwhzqFegQro_bP8QjRX9ECgzB1eFKl6-uto9U1Mzr2DmUueHX0TmVsuq_4EaZLXd7yo/exec";
+
         const defaultDepts = [
             { id: "out_hr", category: "outgoing", parentId: null, name: "التخطيط والموارد البشرية", icon: "fa-users" },
             { id: "out_quality", category: "outgoing", parentId: null, name: "الجودة", icon: "fa-award" },
@@ -654,45 +653,28 @@
         let allRecords = {};
         let currentActiveDeptId = null;
 
-        // دالة الاسترجاع التلقائي للبيانات القديمة من النسخ السابقة
-        function migrateOldData() {
-            const oldKeys = ['barwa_system_popup_2026', 'barwa_system_data_2026'];
-            let recovered = false;
-
-            oldKeys.forEach(key => {
-                const raw = localStorage.getItem(key);
-                if (raw) {
-                    try {
-                        const oldData = JSON.parse(raw);
-                        Object.keys(oldData).forEach(deptId => {
-                            if (Array.isArray(oldData[deptId]) && oldData[deptId].length > 0) {
-                                if (!allRecords[deptId]) allRecords[deptId] = [];
-                                
-                                oldData[deptId].forEach(oldRow => {
-                                    // التأكد من عدم تكرار القيد إذا كان موجوداً مسبقاً
-                                    const exists = allRecords[deptId].some(r => r.id === oldRow.id && r.subject === oldRow.subject);
-                                    if (!exists) {
-                                        allRecords[deptId].unshift(oldRow);
-                                        recovered = true;
-                                    }
-                                });
-                            }
-                        });
-                        // إزالة المفتاح القديم بعد نقله بنجاح لعدم تكراره مستقبلاً
-                        localStorage.removeItem(key);
-                    } catch (e) {
-                        console.error('Migration error:', e);
-                    }
-                }
-            });
-
-            if (recovered) {
-                saveAllData();
-                alert('تم استرجاع جميع بياناتكِ وقيودكِ المسجلة في النسخة السابقة بنجاح!');
+        function setSyncStatus(text, iconClass = "fa-cloud") {
+            const el = document.getElementById("syncStatus");
+            if (el) {
+                el.innerHTML = `<i class="fa-solid ${iconClass}"></i> ${text}`;
             }
         }
 
-        function loadData() {
+        function refreshOpenViews() {
+            renderHomeButtons();
+            if (currentActiveDeptId) {
+                const dept = allDepts.find(d => d.id === currentActiveDeptId);
+                if (dept) {
+                    buildBreadcrumb(dept);
+                    const backBtn = document.getElementById('backStepBtn');
+                    backBtn.style.display = dept.parentId ? 'inline-flex' : 'none';
+                    renderSubDepartments(currentActiveDeptId);
+                }
+                renderRegisterTable();
+            }
+        }
+
+        async function loadData() {
             const savedDepts = localStorage.getItem('barwa_depts_v3');
             const savedRecords = localStorage.getItem('barwa_records_v3');
 
@@ -703,19 +685,51 @@
                 allDepts = JSON.parse(JSON.stringify(defaultDepts));
                 allRecords = JSON.parse(JSON.stringify(defaultRecords));
             }
+            refreshOpenViews();
 
-            // استرجاع أي بيانات من النسخ السابقة تلقائياً
-            migrateOldData();
-            saveAllData();
-            renderHomeButtons();
+            if (!CLOUD_API_URL.startsWith("http")) return;
+
+            setSyncStatus("جاري المزامنة مع السحابة...", "fa-arrows-rotate");
+            try {
+                const res = await fetch(CLOUD_API_URL);
+                const cloud = await res.json();
+                if (Array.isArray(cloud.depts) && cloud.depts.length > 0) {
+                    allDepts = cloud.depts;
+                }
+                if (cloud.records && typeof cloud.records === 'object') {
+                    allRecords = cloud.records;
+                }
+                localStorage.setItem('barwa_depts_v3', JSON.stringify(allDepts));
+                localStorage.setItem('barwa_records_v3', JSON.stringify(allRecords));
+                refreshOpenViews();
+                setSyncStatus("محفوظ سحابياً (Google Sheets)", "fa-cloud-check");
+            } catch (err) {
+                console.error("Cloud load failed:", err);
+                setSyncStatus("وضع محلي (تعذر الاتصال بالسحابة)", "fa-triangle-exclamation");
+            }
         }
 
-        function saveAllData() {
+        async function saveAllData() {
             localStorage.setItem('barwa_depts_v3', JSON.stringify(allDepts));
             localStorage.setItem('barwa_records_v3', JSON.stringify(allRecords));
+
+            if (!CLOUD_API_URL.startsWith("http")) return;
+
+            setSyncStatus("جاري الحفظ السحابي...", "fa-cloud-arrow-up");
+            try {
+                await fetch(CLOUD_API_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify({ depts: allDepts, records: allRecords })
+                });
+                setSyncStatus("محفوظ سحابياً (Google Sheets)", "fa-cloud-check");
+            } catch (err) {
+                console.error("Cloud save failed:", err);
+                setSyncStatus("محفوظ محلياً (تحقق من الاتصال)", "fa-triangle-exclamation");
+            }
         }
 
-        // تصدير نسخة احتياطية كملف JSON
         function exportBackup() {
             const backupObj = {
                 version: "3.0",
@@ -732,22 +746,21 @@
             downloadAnchor.remove();
         }
 
-        // استيراد نسخة احتياطية
         function importBackup(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = async function(e) {
                 try {
                     const imported = JSON.parse(e.target.result);
                     if (imported.depts && imported.records) {
                         if (confirm('هل تريدين استبدال البيانات الحالية بالبيانات الموجودة في ملف النسخة الاحتياطية؟')) {
                             allDepts = imported.depts;
                             allRecords = imported.records;
-                            saveAllData();
-                            renderHomeButtons();
-                            alert('تم استيراد النسخة الاحتياطية بنجاح!');
+                            await saveAllData();
+                            refreshOpenViews();
+                            alert('تم استيراد النسخة الاحتياطية وحفظها بنجاح!');
                         }
                     } else {
                         alert('ملف النسخة الاحتياطية غير صالح.');
@@ -928,7 +941,7 @@
             document.getElementById('deptModal').style.display = 'none';
         }
 
-        function saveNewDept() {
+        async function saveNewDept() {
             const nameVal = document.getElementById('newDeptName').value.trim();
             const categoryVal = document.getElementById('newDeptCategory').value;
             const parentIdVal = document.getElementById('newDeptParentId').value || null;
@@ -949,7 +962,7 @@
             });
             allRecords[newId] = [];
 
-            saveAllData();
+            await saveAllData();
             closeDeptModal();
 
             if (parentIdVal) {
@@ -983,7 +996,7 @@
             document.getElementById('formModal').style.display = 'none';
         }
 
-        function saveEntry() {
+        async function saveEntry() {
             const editIndex = document.getElementById('editRowIndex').value;
             const idVal = document.getElementById('fieldId').value;
             const dateVal = document.getElementById('fieldDate').value;
@@ -1011,15 +1024,15 @@
                 allRecords[currentActiveDeptId].unshift(newObj);
             }
 
-            saveAllData();
+            await saveAllData();
             renderRegisterTable();
             closeFormModal();
         }
 
-        function deleteEntry(index) {
+        async function deleteEntry(index) {
             if (confirm('هل أنت متأكد من حذف هذا القيد نهائياً من السجل؟')) {
                 allRecords[currentActiveDeptId].splice(index, 1);
-                saveAllData();
+                await saveAllData();
                 renderRegisterTable();
             }
         }
