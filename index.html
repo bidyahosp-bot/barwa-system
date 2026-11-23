@@ -74,6 +74,12 @@
         .title-group h1 { font-size: 1.8rem; font-weight: 800; }
         .title-group p { font-size: 0.95rem; color: #e0f2fe; }
 
+        .backup-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
         .main-container {
             max-width: 1400px;
             margin: 30px auto;
@@ -149,6 +155,8 @@
         .btn-print { background: #64748b; color: white; }
         .btn-back { background: #e2e8f0; color: #1e293b; }
         .btn-back:hover { background: #cbd5e1; }
+        .btn-gold { background: var(--accent-color); color: #111; }
+        .btn-gold:hover { background: #b89628; color: white; }
 
         /* Department Card Button */
         .dept-row {
@@ -263,7 +271,6 @@
             background: #f8fafc;
         }
 
-        /* Breadcrumb Navigation inside Modal */
         .breadcrumb-bar {
             background: white;
             padding: 10px 18px;
@@ -286,7 +293,6 @@
             font-size: 0.95rem;
         }
 
-        /* Sub-departments Grid inside Modal */
         .sub-depts-section {
             margin-bottom: 25px;
             background: #f0f9ff;
@@ -320,7 +326,6 @@
             transform: translateY(-2px);
         }
 
-        /* Tables */
         .register-table {
             width: 100%; border-collapse: collapse; background: white;
             border-radius: 10px; overflow: hidden; font-size: 0.92rem;
@@ -334,7 +339,6 @@
         .register-table th { background: #0d5c3a; color: white; font-weight: 700; }
         .register-table tr:hover { background: #f1f5f9; }
 
-        /* Form Modals */
         .form-modal {
             display: none;
             position: fixed;
@@ -363,7 +367,6 @@
             width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; outline: none; font-size: 0.95rem;
         }
 
-        /* Footer */
         footer {
             background: #0f172a; color: #94a3b8; padding: 20px 40px;
             text-align: center; margin-top: auto; border-top: 3px solid var(--accent-color);
@@ -393,6 +396,16 @@
                     <p>منظومة السجلات الإلكترونية الانبثاقية الدائمة (2026م)</p>
                 </div>
             </div>
+            <!-- أزرار النسخ الاحتياطي لحماية البيانات -->
+            <div class="backup-actions">
+                <button class="btn btn-gold" onclick="exportBackup()" title="حفظ نسخة احتياطية على الجهاز">
+                    <i class="fa-solid fa-download"></i> تصدير نسخة احتياطية
+                </button>
+                <button class="btn btn-back" onclick="document.getElementById('importFile').click()" title="استرجاع بيانات من ملف محفوظ">
+                    <i class="fa-solid fa-upload"></i> استيراد نسخة
+                </button>
+                <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importBackup(event)">
+            </div>
         </div>
     </header>
 
@@ -412,7 +425,6 @@
             <div class="category-card">
                 <div class="category-header">
                     <div class="category-title"><i class="fa-solid fa-paper-plane"></i> سجلات الصادر 2026</div>
-                    <!-- زر إضافة قسم جديد مكان العبارة السابقة -->
                     <button class="btn btn-add" onclick="openDeptModal('outgoing', null)">
                         <i class="fa-solid fa-folder-plus"></i> إضافة قسم/سجل جديد
                     </button>
@@ -424,7 +436,6 @@
             <div class="category-card">
                 <div class="category-header">
                     <div class="category-title"><i class="fa-solid fa-inbox"></i> سجلات الوارد 2026</div>
-                    <!-- زر إضافة قسم جديد مكان العبارة السابقة -->
                     <button class="btn btn-add" onclick="openDeptModal('incoming', null)">
                         <i class="fa-solid fa-folder-plus"></i> إضافة قسم/سجل جديد
                     </button>
@@ -448,9 +459,7 @@
                 
                 <!-- شريط التنقل بين الأقسام الرئيسية والفرعية -->
                 <div class="breadcrumb-bar">
-                    <div class="breadcrumb-path" id="breadcrumbPath">
-                        <!-- يتحدث تلقائياً -->
-                    </div>
+                    <div class="breadcrumb-path" id="breadcrumbPath"></div>
                     <div style="display:flex; gap:8px;">
                         <button class="btn btn-back" id="backStepBtn" style="display:none;" onclick="goBackOneLevel()">
                             <i class="fa-solid fa-arrow-right"></i> رجوع للقسم السابق
@@ -595,20 +604,15 @@
         </div>
     </footer>
 
-    <!-- السكربت المتطور لدعم الأقسام المتداخلة والتخزين الدائم -->
     <script>
-        // هيكل الأقسام الافتراضي (يدعم parentId لإنشاء قسم داخل قسم)
         const defaultDepts = [
-            // صادر 2026
             { id: "out_hr", category: "outgoing", parentId: null, name: "التخطيط والموارد البشرية", icon: "fa-users" },
             { id: "out_quality", category: "outgoing", parentId: null, name: "الجودة", icon: "fa-award" },
             { id: "out_health", category: "outgoing", parentId: null, name: "الخدمات الصحية والبرامج", icon: "fa-user-nurse" },
             { id: "out_maintenance", category: "outgoing", parentId: null, name: "الصيانة - طلبات مستشفى بدية", icon: "fa-wrench" },
-            // قسم فرعي مدمج كمثال داخل الصيانة
             { id: "out_admin", category: "outgoing", parentId: "out_maintenance", name: "الشؤون الإدارية (فرعي)", icon: "fa-building" },
             { id: "out_stores", category: "outgoing", parentId: null, name: "المخازن والأثاث", icon: "fa-boxes-packing" },
 
-            // وارد 2026
             { id: "in_direct", category: "incoming", parentId: null, name: "الملفات الواردة المباشرة (الجذور)", icon: "fa-file-lines" },
             { id: "in_hr", category: "incoming", parentId: null, name: "التخطيط والموارد البشرية", icon: "fa-users" },
             { id: "in_quality", category: "incoming", parentId: null, name: "الجودة", icon: "fa-award" },
@@ -618,7 +622,6 @@
             { id: "in_stores", category: "incoming", parentId: null, name: "المخازن والخدمات المساندة", icon: "fa-boxes-packing" }
         ];
 
-        // البيانات الافتراضية للقيود
         const defaultRecords = {
             "out_hr": [{ id: "262300101", date: "2026-01-10", subject: "بيانات موظفي قسم التخطيط والموارد البشرية", target: "المديرية العامة للخدمات الصحية", driveUrl: "https://drive.google.com", notes: "2026.xlsx" }],
             "out_quality": [{ id: "262300205", date: "2026-02-15", subject: "مؤشرات وتقارير الجودة لمستشفى بدية 2026", target: "دائرة الجودة والاعتماد", driveUrl: "https://drive.google.com", notes: "الجودة.xlsx" }],
@@ -651,7 +654,44 @@
         let allRecords = {};
         let currentActiveDeptId = null;
 
-        // تحميل البيانات
+        // دالة الاسترجاع التلقائي للبيانات القديمة من النسخ السابقة
+        function migrateOldData() {
+            const oldKeys = ['barwa_system_popup_2026', 'barwa_system_data_2026'];
+            let recovered = false;
+
+            oldKeys.forEach(key => {
+                const raw = localStorage.getItem(key);
+                if (raw) {
+                    try {
+                        const oldData = JSON.parse(raw);
+                        Object.keys(oldData).forEach(deptId => {
+                            if (Array.isArray(oldData[deptId]) && oldData[deptId].length > 0) {
+                                if (!allRecords[deptId]) allRecords[deptId] = [];
+                                
+                                oldData[deptId].forEach(oldRow => {
+                                    // التأكد من عدم تكرار القيد إذا كان موجوداً مسبقاً
+                                    const exists = allRecords[deptId].some(r => r.id === oldRow.id && r.subject === oldRow.subject);
+                                    if (!exists) {
+                                        allRecords[deptId].unshift(oldRow);
+                                        recovered = true;
+                                    }
+                                });
+                            }
+                        });
+                        // إزالة المفتاح القديم بعد نقله بنجاح لعدم تكراره مستقبلاً
+                        localStorage.removeItem(key);
+                    } catch (e) {
+                        console.error('Migration error:', e);
+                    }
+                }
+            });
+
+            if (recovered) {
+                saveAllData();
+                alert('تم استرجاع جميع بياناتكِ وقيودكِ المسجلة في النسخة السابقة بنجاح!');
+            }
+        }
+
         function loadData() {
             const savedDepts = localStorage.getItem('barwa_depts_v3');
             const savedRecords = localStorage.getItem('barwa_records_v3');
@@ -662,8 +702,11 @@
             } else {
                 allDepts = JSON.parse(JSON.stringify(defaultDepts));
                 allRecords = JSON.parse(JSON.stringify(defaultRecords));
-                saveAllData();
             }
+
+            // استرجاع أي بيانات من النسخ السابقة تلقائياً
+            migrateOldData();
+            saveAllData();
             renderHomeButtons();
         }
 
@@ -672,7 +715,50 @@
             localStorage.setItem('barwa_records_v3', JSON.stringify(allRecords));
         }
 
-        // رسم أزرار الأقسام الرئيسية في الواجهة
+        // تصدير نسخة احتياطية كملف JSON
+        function exportBackup() {
+            const backupObj = {
+                version: "3.0",
+                date: new Date().toISOString(),
+                depts: allDepts,
+                records: allRecords
+            };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupObj, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "Barwa_Backup_" + new Date().toISOString().slice(0,10) + ".json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        // استيراد نسخة احتياطية
+        function importBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported.depts && imported.records) {
+                        if (confirm('هل تريدين استبدال البيانات الحالية بالبيانات الموجودة في ملف النسخة الاحتياطية؟')) {
+                            allDepts = imported.depts;
+                            allRecords = imported.records;
+                            saveAllData();
+                            renderHomeButtons();
+                            alert('تم استيراد النسخة الاحتياطية بنجاح!');
+                        }
+                    } else {
+                        alert('ملف النسخة الاحتياطية غير صالح.');
+                    }
+                } catch (err) {
+                    alert('حدث خطأ أثناء قراءة الملف.');
+                }
+            };
+            reader.readAsText(file);
+        }
+
         function renderHomeButtons() {
             renderCategoryList('outgoingButtons', 'outgoing');
             renderCategoryList('incomingButtons', 'incoming');
@@ -682,7 +768,6 @@
             const container = document.getElementById(containerId);
             container.innerHTML = "";
 
-            // جلب الأقسام الرئيسية فقط (التي ليس لها parentId)
             const rootDepts = allDepts.filter(d => d.category === categoryName && d.parentId === null);
 
             rootDepts.forEach(dept => {
@@ -707,7 +792,6 @@
             });
         }
 
-        // ================= فتح السجل في النافذة المنفصلة =================
         function openRegisterModal(deptId) {
             currentActiveDeptId = deptId;
             const dept = allDepts.find(d => d.id === deptId);
@@ -716,21 +800,12 @@
             document.getElementById('registerModalTitle').innerHTML = `<i class="fa-solid ${dept.icon}"></i> السجل الإلكتروني: ${dept.name}`;
             document.getElementById('registerDeptSubtitle').innerText = `قيود ومراسلات قسم: ${dept.name}`;
 
-            // بناء مسار التنقل (Breadcrumb)
             buildBreadcrumb(dept);
 
-            // عرض زر الرجوع للقسم الأب إذا كان هذا قسماً فرعياً
             const backBtn = document.getElementById('backStepBtn');
-            if (dept.parentId) {
-                backBtn.style.display = 'inline-flex';
-            } else {
-                backBtn.style.display = 'none';
-            }
+            backBtn.style.display = dept.parentId ? 'inline-flex' : 'none';
 
-            // عرض الأقسام الفرعية الموجودة داخل هذا القسم
             renderSubDepartments(deptId);
-
-            // عرض جدول القيود الخاص بهذا القسم
             renderRegisterTable();
 
             document.getElementById('registerModal').style.display = 'flex';
@@ -832,7 +907,6 @@
             `).join('');
         }
 
-        // ================= إضافة قسم رئيسي أو فرعي جديد =================
         function openDeptModal(category, parentId) {
             document.getElementById('newDeptName').value = '';
             document.getElementById('newDeptParentId').value = parentId || '';
@@ -879,14 +953,12 @@
             closeDeptModal();
 
             if (parentIdVal) {
-                // تحديث النافذة الحالية لعرض القسم الفرعي فوراً
                 openRegisterModal(parentIdVal);
             } else {
                 renderHomeButtons();
             }
         }
 
-        // ================= نافذة إضافة/تعديل سطر قيد =================
         function openFormModal(editIndex = null) {
             document.getElementById('editRowIndex').value = editIndex !== null ? editIndex : '';
             
@@ -952,7 +1024,6 @@
             }
         }
 
-        // البحث الشامل
         function globalSearch() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             if(!query) return;
